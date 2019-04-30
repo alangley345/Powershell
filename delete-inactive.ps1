@@ -8,8 +8,6 @@ $SearchName = Read-Host -prompt "File name (no .txt) "
 
 $time = (Get-Date).Adddays(-($DaysInactive))
 
-#Get-ADComputer -Filter {LastLogonTimeStamp -lt $time} -ResultPageSize 2000 -resultSetSize $null -Properties Name
-
 Get-ADComputer -Filter {LastLogonTimeStamp -lt $time} |select-object name | export-csv ~\downloads\$searchname`.csv -NoTypeInformation
  
 foreach-object { Get-ADComputer -Filter {LastLogonTimeStamp -lt $time} }| Remove-ADObject -Recursive -WhatIf
