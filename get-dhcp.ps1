@@ -1,4 +1,4 @@
-#creates a call agaisnt the get-dhcpserverv4lease cmdlet and prompt users for input
+#creates a call against the get-dhcpserverv4lease cmdlet and prompt users for input
 
 function get-dhcp
 {
