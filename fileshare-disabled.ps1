@@ -1,5 +1,5 @@
 #turns specified fodler into csv
-$dir = read-host -prompt "Enter directory to generate csv from: "
+$dir = read-host -prompt "Enter directory to generate csv from"
 get-childitem $dir | export-csv ~\downloads\temp.csv
 import-csv ~\downloads\temp.csv | select-object BaseName | export-csv ~\downloads\filtered.csv
 remove-item -path ~\downloads\temp.csv
@@ -23,8 +23,22 @@ Set-Content ~\downloads\filtered.csv -Value $HeaderRow,$FileContent[2..($FileCon
 #gets current content of DISABLED folder
 $path = 'ou=DISABLED Accounts,ou=users domain wide,dc=claxton,dc=local'
 Get-ADUser -Filter * -SearchBase $path | export-csv ~\downloads\temp.csv
-import-csv ~\downloads\temp.csv | select-object SamAccountName | export-csv ~\downloads\disabled.csv
+import-csv ~\downloads\temp.csv | select-object SamAccountName | Sort-Object SamAccountName | export-csv ~\downloads\disabled.csv -NoTypeInformation
 remove-item -path ~\downloads\temp.csv
 
-#compares the files in question
-(compare-object (import-csv "~\downloads\filtered.csv") (import-csv "~\downloads\disabled.csv")).inputobject | export-csv "~\downloads\matches.csv"
+$filtered = import-Csv ~\downloads\filtered.csv
+$disabled = import-csv ~\downloads\disabled.csv
+#compares the files in question for matches
+foreach ($item1 in $filtered){
+
+    foreach ($item2 in $disabled){
+        
+        $obj = "" | Select-Object SamAccountName
+        if ($item1.SamAccountName -eq $item2.SamAccountName){
+            $obj.SamAccountName = $item1.SamAccountName
+            $obj | Export-Csv -Path ~\downloads\matches.csv -Append -NoTypeInformation
+        }
+    }
+}
+
+write-host "Done"
