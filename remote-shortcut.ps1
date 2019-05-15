@@ -10,8 +10,41 @@ Function Get-FileName($InitialDirectory)
   $OpenFileDialog.filename
 }
 
+function Find-Folders {
+    [Reflection.Assembly]::LoadWithPartialName("System.Windows.Forms") | Out-Null
+    [System.Windows.Forms.Application]::EnableVisualStyles()
+    $browse = New-Object System.Windows.Forms.FolderBrowserDialog
+    $browse.SelectedPath = "\\pluto"
+    $browse.ShowNewFolderButton = $false
+    $browse.Description = "Select a directory"
+
+    $loop = $true
+    while($loop)
+    {
+        if ($browse.ShowDialog() -eq "OK")
+        {
+        $loop = $false
+		
+		#Insert your script here
+		
+        } else
+        {
+            $res = [System.Windows.Forms.MessageBox]::Show("You clicked Cancel. Would you like to try again or exit?", "Select a location", [System.Windows.Forms.MessageBoxButtons]::RetryCancel)
+            if($res -eq "Cancel")
+            {
+                #Ends script
+                break outer
+            }
+        }
+    }
+    $browse.SelectedPath
+    $browse.Dispose()
+} 
+
+
 # Prompt user for desired path and create named shortcut
-$TargetFile = read-host -prompt "Enter desired shortcut path"
+Write-host "Select desired shortcut path"
+$TargetFile = Find-Folders
 
 #trim path and make string
 $link = $TargetFile.tostring()
