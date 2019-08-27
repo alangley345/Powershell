@@ -6,17 +6,6 @@ Generates a list of installed programs on a computer
 .DESCRIPTION
 This function generates a list by querying the registry and returning the installed programs of a local or remote computer.
 
-.NOTES   
-Name       : Get-RemoteProgram
-Author     : Jaap Brasser
-Version    : 1.4.1
-DateCreated: 2013-08-23
-DateUpdated: 2018-04-09
-Blog       : http://www.jaapbrasser.com
-
-.LINK
-http://www.jaapbrasser.com
-
 .PARAMETER ComputerName
 The computer to which connectivity will be checked
 
