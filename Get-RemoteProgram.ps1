@@ -221,3 +221,5 @@ Will retrieve the InstallDate of all components that match the regex pattern of 
         }
     }
 }
+
+Get-RemoteProgram 
